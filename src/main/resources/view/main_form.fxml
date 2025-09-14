@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="424.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainFormController">
+   <children>
+      <ImageView fitHeight="83.0" fitWidth="84.0" layoutX="75.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/shop1.jpeg" />
+         </image>
+      </ImageView>
+      <Label layoutX="173.0" layoutY="45.0" prefHeight="38.0" prefWidth="322.0" text="Thoga Kade Management System">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnCustomerManagement" buttonType="RAISED" layoutX="197.0" layoutY="114.0" onAction="#btnCustomerManagementOnAction" prefHeight="38.0" prefWidth="194.0" style="-fx-background-color: #3949AB; -fx-text-fill: white;" text="Customer Management">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnItemManagement" buttonType="RAISED" layoutX="199.0" layoutY="184.0" onAction="#btnItemManagementOnAction" prefHeight="38.0" prefWidth="194.0" style="-fx-background-color: #3949AB; -fx-text-fill: white;" text="Item Management">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnOrderManagement" buttonType="RAISED" layoutX="196.0" layoutY="256.0" onAction="#btnOrderManagementOnAction" prefHeight="38.0" prefWidth="194.0" style="-fx-background-color: #3949AB; -fx-text-fill: white;" text="Order Management">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnOrderDetailsManagement" buttonType="RAISED" layoutX="197.0" layoutY="338.0" onAction="#btnOrderDetailsManagemntOnAction" prefHeight="38.0" prefWidth="194.0" style="-fx-background-color: #3949AB; -fx-text-fill: white;" text="Order Detail Management">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
