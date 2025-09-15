@@ -73,5 +73,10 @@
          </font>
       </JFXButton>
       <DatePicker fx:id="datePickerOrderDate" layoutX="608.0" layoutY="206.0" />
+      <ImageView fitHeight="58.0" fitWidth="64.0" layoutX="411.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/order.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
