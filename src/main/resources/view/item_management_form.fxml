@@ -13,17 +13,17 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemManagementFormController">
    <children>
-      <ImageView fitHeight="78.0" fitWidth="112.0" layoutX="22.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="99.0" fitWidth="85.0" layoutX="22.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/shop1.jpeg" />
          </image>
       </ImageView>
-      <Label layoutX="115.0" layoutY="28.0" text="Thoga Kade Management System">
+      <Label layoutX="149.0" layoutY="24.0" text="Thoga Kade Management System">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Label layoutX="115.0" layoutY="60.0" text="Item Management">
+      <Label layoutX="149.0" layoutY="55.0" text="Item Management">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -87,5 +87,10 @@
             <Font name="Arial Rounded MT Bold" size="11.0" />
          </font>
       </JFXButton>
+      <ImageView fitHeight="54.0" fitWidth="56.0" layoutX="96.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/item1.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

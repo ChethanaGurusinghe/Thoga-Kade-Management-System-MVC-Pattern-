@@ -13,17 +13,17 @@
 
 <AnchorPane prefHeight="645.0" prefWidth="856.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OrderManagementFormController">
    <children>
-      <ImageView fitHeight="78.0" fitWidth="112.0" layoutX="31.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="90.0" fitWidth="92.0" layoutX="31.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/shop1.jpeg" />
          </image>
       </ImageView>
-      <Label layoutX="122.0" layoutY="30.0" text="Thoga Kade Management System">
+      <Label layoutX="167.0" layoutY="28.0" text="Thoga Kade Management System">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Label layoutX="122.0" layoutY="67.0" text="Order Management">
+      <Label layoutX="167.0" layoutY="64.0" text="Order Management">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -73,9 +73,9 @@
          </font>
       </JFXButton>
       <DatePicker fx:id="datePickerOrderDate" layoutX="608.0" layoutY="206.0" />
-      <ImageView fitHeight="58.0" fitWidth="64.0" layoutX="411.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="99.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../assets/order.png" />
+            <Image url="@../assets/order1.png" />
          </image>
       </ImageView>
    </children>
