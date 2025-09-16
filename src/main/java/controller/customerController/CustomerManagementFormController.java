@@ -119,24 +119,9 @@ public class CustomerManagementFormController implements Initializable {
             return;
         }
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
-
-            String SQL = "DELETE FROM Customer WHERE CustID = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setObject(1, id);
-
-            int rows = preparedStatement.executeUpdate();
-            if (rows > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Customer deleted successfully!").show();
-                loadCustomerTable();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No customer found with this ID").show();
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error while deleting customer").show();
-            e.printStackTrace();
-        }
+        CustomerManagementController customerManagementController = new CustomerManagementController();
+        customerManagementController.deleteCustomerDetails(id);
+        loadCustomerTable();
     }
 
     @FXML
@@ -157,36 +142,9 @@ public class CustomerManagementFormController implements Initializable {
             return;
         }
 
-        try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/Thogakade", "root", "1234"
-            );
-
-            String SQL = "UPDATE Customer SET CustTitle= ?, CustName= ?, DOB= ?, salary= ?, CustAddress= ?, City= ?, Province= ?, PostalCode=? WHERE CustID= ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-
-            preparedStatement.setObject(1, title);
-            preparedStatement.setObject(2, name);
-            preparedStatement.setObject(3, dob);
-            preparedStatement.setObject(4, salary);
-            preparedStatement.setObject(5, address);
-            preparedStatement.setObject(6, city);
-            preparedStatement.setObject(7, province);
-            preparedStatement.setObject(8, postalCode);
-            preparedStatement.setObject(9, id);
-
-            int rows = preparedStatement.executeUpdate();
-            if (rows > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Customer Updated Successfully!").show();
-                loadCustomerTable(); // refresh table
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No Customer found with this ID").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error while updating customer :" + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        CustomerManagementController customerManagementController = new CustomerManagementController();
+        customerManagementController.updateCustomerDetails(title,name,dob,salary,address,city,province,postalCode,id);
+        loadCustomerTable();
     }
 
 
