@@ -80,29 +80,11 @@ public class ItemManagementFormController implements Initializable {
         Double unitPrice = Double.valueOf(txtUnitPrice.getText());
         Integer qtyOnHand = Integer.valueOf(txtQttyOnHand.getText());
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
 
-            String SQL = "INSERT INTO Item (ItemCode, Description, PackSize, UnitPrice, QtyOnHand) VALUES (?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-
-            preparedStatement.setObject(1, itemCode);
-            preparedStatement.setObject(2, description);
-            preparedStatement.setObject(3, packSize);
-            preparedStatement.setObject(4, unitPrice);
-            preparedStatement.setObject(5, qtyOnHand);
-
-            int rows = preparedStatement.executeUpdate();
-            if (rows > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Item Added Successfully!").show();
-                loadItemTable(); // refresh table
-                btnItemClearOnAction(null); // clear fields
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        ItemManagementController itemManagementController = new ItemManagementController();
+        itemManagementController.addItemDetails(itemCode,description,packSize,unitPrice,qtyOnHand);
+        loadItemTable();
+        btnItemClearOnAction(null);
     }
 
     // ---------------- CLEAR ----------------
