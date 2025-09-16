@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class OrderManagementController {
 
-    public void addOrderDetails(String custId, String orderId, LocalDate orderDate){
+    public void addOrderDetails(String orderId, String custId, LocalDate orderDate){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
             // Validate CustID exists
@@ -71,9 +71,9 @@ public class OrderManagementController {
              PreparedStatement ps = con.prepareStatement(
                      "UPDATE Orders SET OrderDate=?, CustID=? WHERE OrderID=?")) {
 
-            ps.setDate(1, Date.valueOf(id));
+            ps.setDate(1, Date.valueOf(orderDate));
             ps.setString(2,custId);
-            ps.setString(3, String.valueOf(orderDate));
+            ps.setString(3, id);
 
             int updated = ps.executeUpdate();
             if (updated > 0) {
