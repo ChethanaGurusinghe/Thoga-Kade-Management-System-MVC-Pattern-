@@ -106,26 +106,10 @@ public class ItemManagementFormController implements Initializable {
             return;
         }
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
-
-            String SQL = "DELETE FROM Item WHERE ItemCode=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setObject(1, code);
-
-            int rows = preparedStatement.executeUpdate();
-            if (rows > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Item Deleted Successfully!").show();
-                loadItemTable();
-                btnItemClearOnAction(null);
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No Item found with this Code").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        ItemManagementController itemManagementController = new ItemManagementController();
+        itemManagementController.deleteItemDetails(code);
+        loadItemTable();
+        btnItemClearOnAction(null);
     }
 
     // ---------------- UPDATE ----------------
@@ -142,30 +126,9 @@ public class ItemManagementFormController implements Initializable {
             return;
         }
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
-
-            String SQL = "UPDATE Item SET Description=?, PackSize=?, UnitPrice=?, QtyOnHand=? WHERE ItemCode=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-
-            preparedStatement.setObject(1, description);
-            preparedStatement.setObject(2, packSize);
-            preparedStatement.setObject(3, unitPrice);
-            preparedStatement.setObject(4, qtyOnHand);
-            preparedStatement.setObject(5, code);
-
-            int rows = preparedStatement.executeUpdate();
-            if (rows > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Item Updated Successfully!").show();
-                loadItemTable();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No Item found with this Code").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        ItemManagementController itemManagementController = new ItemManagementController();
+        itemManagementController.updateItemDetails(description,packSize,unitPrice,qtyOnHand,code);
+        loadItemTable();
     }
 
     // ---------------- EXIT ----------------
