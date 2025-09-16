@@ -2,6 +2,7 @@ package controller.orderController;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import controller.orderController.OrderManagementController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -95,6 +96,7 @@ public class OrderManagementFormController implements Initializable {
         }
     }
 
+    //---------------------ADD------------------
     @FXML
     void btnOrderAddOnAction(ActionEvent event) {
         String orderId = txtOrderId.getText();
@@ -106,87 +108,46 @@ public class OrderManagementFormController implements Initializable {
             return;
         }
 
-        try (Connection con = getConnection()) {
-            // Validate CustID exists
-            if (!existsInTable(con, "Customer", "CustID", custId)) {
-                new Alert(Alert.AlertType.ERROR, "Invalid Customer ID").show();
-                return;
-            }
-
-            String insertSQL = "INSERT INTO Orders (OrderID, OrderDate, CustID) VALUES (?,?,?)";
-            try (PreparedStatement ps = con.prepareStatement(insertSQL)) {
-                ps.setString(1, orderId);
-                ps.setDate(2, Date.valueOf(orderDate));
-                ps.setString(3, custId);
-                ps.executeUpdate();
-
-                new Alert(Alert.AlertType.INFORMATION, "Order Added Successfully!").show();
-                loadOrdersFromDB();
-                clearFields();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        OrderManagementController orderManagementController = new OrderManagementController();
+        orderManagementController.addOrderDetails(orderId,custId,orderDate);
+        loadOrdersFromDB();
+        clearFields();
     }
 
+    //------------------UPDATE------------------
     @FXML
     void btnOrderUpdateOnAction(ActionEvent event) {
+
+        String id = txtOrderId.getText();
+        String custId = txtCustomerId.getText();
+        LocalDate orderDate = datePickerOrderDate.getValue();
+
         if (txtOrderId.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Select a row to update").show();
             return;
         }
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(
-                     "UPDATE Orders SET OrderDate=?, CustID=? WHERE OrderID=?")) {
-
-            ps.setDate(1, Date.valueOf(datePickerOrderDate.getValue()));
-            ps.setString(2, txtCustomerId.getText());
-            ps.setString(3, txtOrderId.getText());
-
-            int updated = ps.executeUpdate();
-            if (updated > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Order Updated Successfully!").show();
-                loadOrdersFromDB();
-                clearFields();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No matching record found").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        OrderManagementController orderManagementController = new OrderManagementController();
+        orderManagementController.updateOrderDetails(id,custId,orderDate);
+        loadOrdersFromDB();
+        clearFields();
     }
 
+    //---------------------DELETE----------------------
     @FXML
     void btnOrderDeleteOnAction(ActionEvent event) {
+
+        String id = txtOrderId.getText();
+
         if (txtOrderId.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Select a row to delete").show();
             return;
         }
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(
-                     "DELETE FROM Orders WHERE OrderID=?")) {
-
-            ps.setString(1, txtOrderId.getText());
-
-            int deleted = ps.executeUpdate();
-            if (deleted > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Order Deleted Successfully!").show();
-                loadOrdersFromDB();
-                clearFields();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No matching record found").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        OrderManagementController orderManagementController = new OrderManagementController();
+        orderManagementController.orderDeleteDetails(id);
+        loadOrdersFromDB();
+        clearFields();
     }
 
     @FXML
