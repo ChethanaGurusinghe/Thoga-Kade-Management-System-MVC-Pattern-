@@ -1,6 +1,9 @@
 package controller.customerController;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import model.CustomerInfo;
 
 import java.sql.*;
 
@@ -96,5 +99,35 @@ public class CustomerManagementController {
             new Alert(Alert.AlertType.ERROR, "Error while updating customer :" + e.getMessage()).show();
             e.printStackTrace();
         }
+    }
+
+    public ObservableList<CustomerInfo> getAllCustomerDetails(){
+
+        ObservableList<CustomerInfo> customerList = FXCollections.observableArrayList();
+
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Customer");
+
+            while (rs.next()) {
+                CustomerInfo customer = new CustomerInfo(
+                        rs.getString("CustID"),
+                        rs.getString("CustTitle"),
+                        rs.getString("CustName"),
+                        rs.getDate("DOB").toLocalDate().toString(),
+                        rs.getDouble("salary"),
+                        rs.getString("CustAddress"),
+                        rs.getString("City"),
+                        rs.getString("Province"),
+                        rs.getInt("PostalCode")
+                );
+                customerList.add(customer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerList;
     }
 }

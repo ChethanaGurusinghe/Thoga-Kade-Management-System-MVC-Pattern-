@@ -1,11 +1,11 @@
 package controller.itemController;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import model.ItemInfo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ItemManagementController {
 
@@ -84,5 +84,31 @@ public class ItemManagementController {
             new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
             e.printStackTrace();
         }
+
+    }
+
+    public ObservableList<ItemInfo> getAllitemDetails(){
+
+        ObservableList<ItemInfo> itemInfos = FXCollections.observableArrayList();
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
+
+            ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM Item");
+
+            while (rs.next()) {
+                itemInfos.add(new ItemInfo(
+                        rs.getString("ItemCode"),
+                        rs.getString("Description"),
+                        rs.getString("PackSize"),
+                        rs.getDouble("UnitPrice"),
+                        rs.getInt("QtyOnHand")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return itemInfos;
     }
 }

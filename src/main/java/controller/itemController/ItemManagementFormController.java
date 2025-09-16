@@ -147,26 +147,9 @@ public class ItemManagementFormController implements Initializable {
     private void loadItemTable() {
         itemInfos.clear();
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
-
-            ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM Item");
-
-            while (rs.next()) {
-                itemInfos.add(new ItemInfo(
-                        rs.getString("ItemCode"),
-                        rs.getString("Description"),
-                        rs.getString("PackSize"),
-                        rs.getDouble("UnitPrice"),
-                        rs.getInt("QtyOnHand")
-                ));
-            }
-
-            tblItemManagement.setItems(itemInfos);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ItemManagementController itemManagementController = new ItemManagementController();
+        ObservableList<ItemInfo> allitemDetails = itemManagementController.getAllitemDetails();
+        tblItemManagement.setItems(allitemDetails);
     }
 
     private void fillFields(ItemInfo item) {

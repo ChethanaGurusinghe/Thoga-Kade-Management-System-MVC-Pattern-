@@ -161,33 +161,11 @@ public class CustomerManagementFormController implements Initializable {
     }
 
     private void loadCustomerTable() {
-        ObservableList<CustomerInfo> customerList = FXCollections.observableArrayList();
 
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Customer");
+        CustomerManagementController customerManagementController = new CustomerManagementController();
+        ObservableList<CustomerInfo> allCustomerDetails = customerManagementController.getAllCustomerDetails();
 
-            while (rs.next()) {
-                CustomerInfo customer = new CustomerInfo(
-                        rs.getString("CustID"),
-                        rs.getString("CustTitle"),
-                        rs.getString("CustName"),
-                        rs.getDate("DOB").toLocalDate().toString(), // since your colDob is String
-                        rs.getDouble("salary"),
-                        rs.getString("CustAddress"),
-                        rs.getString("City"),
-                        rs.getString("Province"),
-                        rs.getInt("PostalCode")
-                );
-                customerList.add(customer);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        tblCustomerManagement.setItems(customerList); // set data to table
+        tblCustomerManagement.setItems(allCustomerDetails);
     }
 
 
