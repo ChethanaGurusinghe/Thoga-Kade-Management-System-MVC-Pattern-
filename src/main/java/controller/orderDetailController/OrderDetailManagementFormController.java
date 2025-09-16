@@ -108,80 +108,47 @@ public class OrderDetailManagementFormController implements Initializable {
         }
     }
 
-    // Add order detail with foreign key validation
+    // --------------------Add ---------------
     @FXML
     void btnOrderDetailsAddOnAction(ActionEvent event) {
         String orderId = txtOrderId.getText();
         String itemCode = txtItemCode.getText();
+        Integer orderQty = Integer.valueOf(txtOrderQty.getText());
+        Integer discount = Integer.valueOf(txtDiscount.getText());
 
         if (orderId.isEmpty() || itemCode.isEmpty() || txtOrderQty.getText().isEmpty() || txtDiscount.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Please fill all fields").show();
             return;
         }
 
-        try (Connection con = getConnection()) {
+        OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
+        orderDetailManagementController.addOrderDetails(orderId,itemCode,orderQty,discount);
+        loadOrderDetailsFromDB();
+        clearFields();
 
-            // Validate OrderID exists
-            if (!existsInTable(con, "Orders", "OrderID", orderId)) {
-                new Alert(Alert.AlertType.ERROR, "Invalid Order ID").show();
-                return;
-            }
-
-            // Validate ItemCode exists
-            if (!existsInTable(con, "Item", "ItemCode", itemCode)) {
-                new Alert(Alert.AlertType.ERROR, "Invalid Item Code").show();
-                return;
-            }
-
-            String insertSQL = "INSERT INTO OrderDetail (OrderID, ItemCode, OrderQTY, Discount) VALUES (?,?,?,?)";
-            try (PreparedStatement ps = con.prepareStatement(insertSQL)) {
-                ps.setString(1, orderId);
-                ps.setString(2, itemCode);
-                ps.setInt(3, Integer.parseInt(txtOrderQty.getText()));
-                ps.setInt(4, Integer.parseInt(txtDiscount.getText()));
-                ps.executeUpdate();
-                new Alert(Alert.AlertType.INFORMATION, "Order Detail Added Successfully!").show();
-                loadOrderDetailsFromDB();
-                clearFields();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
     }
 
+    //------------UPDATE-------------------
     @FXML
     void btnOrderDetailsUpdateOnAction(ActionEvent event) {
+
+        String orderId = txtOrderId.getText();
+        String itemCode = txtItemCode.getText();
+        Integer orderQty = Integer.valueOf(txtOrderQty.getText());
+        Integer discount = Integer.valueOf(txtDiscount.getText());
+
         if (txtOrderId.getText().isEmpty() || txtItemCode.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Select a row to update").show();
             return;
         }
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(
-                     "UPDATE OrderDetail SET OrderQTY=?, Discount=? WHERE OrderID=? AND ItemCode=?")) {
-
-            ps.setInt(1, Integer.parseInt(txtOrderQty.getText()));
-            ps.setInt(2, Integer.parseInt(txtDiscount.getText()));
-            ps.setString(3, txtOrderId.getText());
-            ps.setString(4, txtItemCode.getText());
-
-            int updated = ps.executeUpdate();
-            if (updated > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Order Detail Updated Successfully!").show();
-                loadOrderDetailsFromDB();
-                clearFields();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No matching record found").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
+        orderDetailManagementController.updateOrderDetails(orderId,itemCode,orderQty,discount);
+        loadOrderDetailsFromDB();
+        clearFields();
     }
 
+    //--------------DELETE----------------
     @FXML
     void btnOrderDetailsDeleteOnAction(ActionEvent event) {
         if (txtOrderId.getText().isEmpty() || txtItemCode.getText().isEmpty()) {
@@ -223,16 +190,6 @@ public class OrderDetailManagementFormController implements Initializable {
         txtDiscount.clear();
     }
 
-    // Helper: Check if a value exists in another table (for foreign key validation)
-    private boolean existsInTable(Connection con, String table, String column, String value) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM " + table + " WHERE " + column + "=?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, value);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt(1) > 0;
-        }
-    }
 
     public void btnOrderDetailExitOnAction(ActionEvent actionEvent) {
         try {
