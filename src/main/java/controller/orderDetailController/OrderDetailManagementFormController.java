@@ -151,31 +151,17 @@ public class OrderDetailManagementFormController implements Initializable {
     //--------------DELETE----------------
     @FXML
     void btnOrderDetailsDeleteOnAction(ActionEvent event) {
+
+        String orderId = txtOrderId.getText();
+        String itemCode = txtItemCode.getText();
+
         if (txtOrderId.getText().isEmpty() || txtItemCode.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Select a row to delete").show();
             return;
         }
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(
-                     "DELETE FROM OrderDetail WHERE OrderID=? AND ItemCode=?")) {
-
-            ps.setString(1, txtOrderId.getText());
-            ps.setString(2, txtItemCode.getText());
-
-            int deleted = ps.executeUpdate();
-            if (deleted > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Order Detail Deleted Successfully!").show();
-                loadOrderDetailsFromDB();
-                clearFields();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No matching record found").show();
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-            e.printStackTrace();
-        }
+        loadOrderDetailsFromDB();
+        clearFields();
     }
 
     @FXML

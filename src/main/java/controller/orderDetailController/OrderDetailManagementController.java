@@ -64,6 +64,29 @@ public class OrderDetailManagementController {
         }
     }
 
+    public void deleteOrderDetails(String orderId,String itemCode){
+
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+             PreparedStatement ps = con.prepareStatement(
+                     "DELETE FROM OrderDetail WHERE OrderID=? AND ItemCode=?")) {
+
+            ps.setString(1,orderId);
+            ps.setString(2,itemCode);
+
+            int deleted = ps.executeUpdate();
+            if (deleted > 0) {
+                new Alert(Alert.AlertType.INFORMATION, "Order Detail Deleted Successfully!").show();
+
+            } else {
+                new Alert(Alert.AlertType.WARNING, "No matching record found").show();
+            }
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+            e.printStackTrace();
+        }
+    }
+
     private boolean existsInTable(Connection con, String table, String column, String value) throws SQLException {
         String sql = "SELECT COUNT(*) FROM " + table + " WHERE " + column + "=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
