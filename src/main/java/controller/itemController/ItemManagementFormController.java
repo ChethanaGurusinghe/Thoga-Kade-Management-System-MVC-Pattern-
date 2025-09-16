@@ -1,4 +1,4 @@
-package controller;
+package controller.itemController;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;

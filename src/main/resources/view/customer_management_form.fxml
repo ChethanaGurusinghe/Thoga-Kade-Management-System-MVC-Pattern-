@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="679.0" prefWidth="907.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerManagementFormController">
+<AnchorPane prefHeight="679.0" prefWidth="907.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.customerController.CustomerManagementFormController">
    <children>
       <Label layoutX="154.0" layoutY="21.0" text="Thoga Kade Management System">
          <font>

@@ -1,4 +1,4 @@
-package controller;
+package controller.orderController;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;

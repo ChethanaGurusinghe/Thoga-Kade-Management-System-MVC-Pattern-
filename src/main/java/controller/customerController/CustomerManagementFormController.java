@@ -1,4 +1,4 @@
-package controller;
+package controller.customerController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -90,40 +90,12 @@ public class CustomerManagementFormController implements Initializable {
         String province = txtProvince.getText();
         int postalCode = Integer.parseInt(txtPostalCode.getText());
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+        CustomerManagementController customerManagementController = new CustomerManagementController();
+        customerManagementController.addCustomerDetails(id,title,name,dob,salary,address,city,province,postalCode);
+        loadCustomerTable();
 
-            // Check if customer already exists
-            String checkSQL = "SELECT COUNT(*) FROM Customer WHERE CustID = ?";
-            PreparedStatement checkStmt = connection.prepareStatement(checkSQL);
-            checkStmt.setString(1, id);
-            ResultSet rs = checkStmt.executeQuery();
-            rs.next();
-            if (rs.getInt(1) > 0) {
-                new Alert(Alert.AlertType.WARNING, "Customer ID already exists!").show();
-                return;
-            }
-
-            String SQL = "INSERT INTO Customer VALUES (?,?,?,?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-
-            preparedStatement.setObject(1, id);
-            preparedStatement.setObject(2, title);
-            preparedStatement.setObject(3, name);
-            preparedStatement.setObject(4, dob);
-            preparedStatement.setObject(5, salary);
-            preparedStatement.setObject(6, address);
-            preparedStatement.setObject(7, city);
-            preparedStatement.setObject(8, province);
-            preparedStatement.setObject(9, postalCode);
-
-            preparedStatement.executeUpdate();
-            loadCustomerTable();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
+
 
     @FXML
     void btnCustomerClearOnAction(ActionEvent event) {
