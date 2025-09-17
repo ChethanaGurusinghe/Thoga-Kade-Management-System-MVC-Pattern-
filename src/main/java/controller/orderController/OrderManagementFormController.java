@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class OrderManagementFormController implements Initializable {
 
-    OrderManagementController orderManagementController = new OrderManagementController();
+    OrderManagementService orderManagementService = new OrderManagementController();
 
     @FXML
     private JFXButton btnOrderAdd, btnOrderClear, btnOrderDelete, btnOrderUpdate;
@@ -81,6 +81,7 @@ public class OrderManagementFormController implements Initializable {
 
     private void loadOrdersFromDB() {
         orderList.clear();
+        OrderManagementController orderManagementController = new OrderManagementController();
         ObservableList<OrderInfo> allOrderDetails = orderManagementController.getAllOrderDetails();
         tblOrderManagement.setItems(allOrderDetails);
     }
@@ -88,16 +89,16 @@ public class OrderManagementFormController implements Initializable {
     //---------------------ADD------------------
     @FXML
     void btnOrderAddOnAction(ActionEvent event) {
-        String orderId = txtOrderId.getText();
+        String id = txtOrderId.getText();
         String custId = txtCustomerId.getText();
         LocalDate orderDate = datePickerOrderDate.getValue();
 
-        if (orderId.isEmpty() || custId.isEmpty() || orderDate == null) {
+        if (id.isEmpty() || custId.isEmpty() || orderDate == null) {
             new Alert(Alert.AlertType.WARNING, "Please fill all fields").show();
             return;
         }
 
-        orderManagementController.addOrderDetails(orderId,custId,orderDate);
+        orderManagementService.addOrderDetails(id,custId,orderDate);
         loadOrdersFromDB();
         clearFields();
     }
@@ -115,7 +116,7 @@ public class OrderManagementFormController implements Initializable {
             return;
         }
 
-        orderManagementController.updateOrderDetails(id,custId,orderDate);
+        orderManagementService.updateOrderDetails(id,custId,orderDate);
         loadOrdersFromDB();
         clearFields();
     }
@@ -131,7 +132,7 @@ public class OrderManagementFormController implements Initializable {
             return;
         }
 
-        orderManagementController.orderDeleteDetails(id);
+        orderManagementService.deleteOrderDetails(id);
         loadOrdersFromDB();
         clearFields();
     }

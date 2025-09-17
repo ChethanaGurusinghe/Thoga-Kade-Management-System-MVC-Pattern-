@@ -9,9 +9,10 @@ import model.OrderInfo;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class OrderManagementController {
+public class OrderManagementController implements OrderManagementService {
 
-    public void addOrderDetails(String orderId, String custId, LocalDate orderDate){
+    @Override
+    public void addOrderDetails(String id, String custId, LocalDate orderDate){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
 
@@ -22,7 +23,7 @@ public class OrderManagementController {
 
             String insertSQL = "INSERT INTO Orders (OrderID, OrderDate, CustID) VALUES (?,?,?)";
             try (PreparedStatement ps = con.prepareStatement(insertSQL)) {
-                ps.setString(1, orderId);
+                ps.setString(1, id);
                 ps.setDate(2, Date.valueOf(orderDate));
                 ps.setString(3, custId);
                 ps.executeUpdate();
@@ -37,18 +38,8 @@ public class OrderManagementController {
         }
     }
 
-    private boolean existsInTable(Connection con, String table, String column, String value) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM " + table + " WHERE " + column + "=?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, value);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt(1) > 0;
-        }
-    }
-
-    public void orderDeleteDetails(String id){
-
+    @Override
+    public void deleteOrderDetails(String id) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
              PreparedStatement ps = con.prepareStatement(
                      "DELETE FROM Orders WHERE OrderID=?")) {
@@ -69,6 +60,18 @@ public class OrderManagementController {
         }
     }
 
+    private boolean existsInTable(Connection con, String table, String column, String value) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM " + table + " WHERE " + column + "=?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, value);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rs.getInt(1) > 0;
+        }
+    }
+
+
+    @Override
     public void updateOrderDetails(String id,String custId,LocalDate orderDate){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
