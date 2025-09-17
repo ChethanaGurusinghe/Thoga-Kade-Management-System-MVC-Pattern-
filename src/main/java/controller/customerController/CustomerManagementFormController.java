@@ -23,6 +23,10 @@ import java.util.ResourceBundle;
 
 public class CustomerManagementFormController implements Initializable {
 
+    CustomerManagementController customerManagementController = new CustomerManagementController();
+
+    CustomerManagementService customerManagementService = new CustomerManagementController();
+
 
     public Button btnOrderManagemenExit;
     @FXML
@@ -76,7 +80,7 @@ public class CustomerManagementFormController implements Initializable {
 
     );
 
-
+    //-------------------ADD-------------------------
     @FXML
     void btnCustomerAddOnAction(ActionEvent event) {
 
@@ -90,8 +94,8 @@ public class CustomerManagementFormController implements Initializable {
         String province = txtProvince.getText();
         int postalCode = Integer.parseInt(txtPostalCode.getText());
 
-        CustomerManagementController customerManagementController = new CustomerManagementController();
-        customerManagementController.addCustomerDetails(id,title,name,dob,salary,address,city,province,postalCode);
+        customerManagementService.addCustomerDetails(id,title,name,dob,salary,address,city,province,postalCode);
+        //customerManagementController.addCustomerDetails(id,title,name,dob,salary,address,city,province,postalCode);
         loadCustomerTable();
 
     }
@@ -110,6 +114,7 @@ public class CustomerManagementFormController implements Initializable {
         txtPostalCode.clear();
     }
 
+    //------------------------DELETE------------------------
     @FXML
     void btnCustomerDeleteOnAction(ActionEvent event) {
         String id = txtId.getText();
@@ -119,11 +124,12 @@ public class CustomerManagementFormController implements Initializable {
             return;
         }
 
-        CustomerManagementController customerManagementController = new CustomerManagementController();
-        customerManagementController.deleteCustomerDetails(id);
+        customerManagementService.deleteCustomerDetails(id);
+        //customerManagementController.deleteCustomerDetails(id);
         loadCustomerTable();
     }
 
+    //---------------------UPDATE--------------
     @FXML
     void btnCustomerUpdateOnAction(ActionEvent event) {
 
@@ -142,8 +148,8 @@ public class CustomerManagementFormController implements Initializable {
             return;
         }
 
-        CustomerManagementController customerManagementController = new CustomerManagementController();
-        customerManagementController.updateCustomerDetails(title,name,dob,salary,address,city,province,postalCode,id);
+        customerManagementService.updateCustomerDetails(title,name,dob,salary,address,city,province,postalCode,id);
+        //customerManagementController.updateCustomerDetails(title,name,dob,salary,address,city,province,postalCode,id);
         loadCustomerTable();
     }
 
@@ -160,9 +166,9 @@ public class CustomerManagementFormController implements Initializable {
         stage.show();
     }
 
+    //-----------load table------------------
     private void loadCustomerTable() {
 
-        CustomerManagementController customerManagementController = new CustomerManagementController();
         ObservableList<CustomerInfo> allCustomerDetails = customerManagementController.getAllCustomerDetails();
 
         tblCustomerManagement.setItems(allCustomerDetails);

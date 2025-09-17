@@ -1,6 +1,9 @@
 package controller.orderDetailController;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import model.OrderDetailsinfo;
 
 import java.sql.*;
 
@@ -87,6 +90,30 @@ public class OrderDetailManagementController {
         }
     }
 
+
+    public ObservableList<OrderDetailsinfo> getAllOrderDetails(){
+
+        ObservableList<OrderDetailsinfo> orderDetailsList = FXCollections.observableArrayList();
+
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM OrderDetail")) {
+
+            while (rs.next()) {
+                orderDetailsList.add(new OrderDetailsinfo(
+                        rs.getString("OrderID"),
+                        rs.getString("ItemCode"),
+                        rs.getInt("OrderQTY"),
+                        rs.getInt("Discount")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderDetailsList;
+    }
+
     private boolean existsInTable(Connection con, String table, String column, String value) throws SQLException {
         String sql = "SELECT COUNT(*) FROM " + table + " WHERE " + column + "=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -96,5 +123,6 @@ public class OrderDetailManagementController {
             return rs.getInt(1) > 0;
         }
     }
+
 
 }

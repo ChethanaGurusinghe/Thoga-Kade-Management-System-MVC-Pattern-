@@ -1,6 +1,10 @@
 package controller.orderController;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import model.ItemInfo;
+import model.OrderInfo;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -10,7 +14,7 @@ public class OrderManagementController {
     public void addOrderDetails(String orderId, String custId, LocalDate orderDate){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
-            // Validate CustID exists
+
             if (!existsInTable(con, "Customer", "CustID", custId)) {
                 new Alert(Alert.AlertType.ERROR, "Invalid Customer ID").show();
                 return;
@@ -88,4 +92,27 @@ public class OrderManagementController {
             e.printStackTrace();
         }
     }
+
+    public ObservableList<OrderInfo> getAllOrderDetails(){
+
+        ObservableList<OrderInfo> orderList = FXCollections.observableArrayList();
+
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM Orders")) {
+
+            while (rs.next()) {
+                orderList.add(new OrderInfo(
+                        rs.getString("OrderID"),
+                        rs.getDate("OrderDate").toLocalDate().toString(),
+                        rs.getString("CustID")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+
 }

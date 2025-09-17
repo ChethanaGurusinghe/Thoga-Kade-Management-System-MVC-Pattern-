@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 
 public class OrderManagementFormController implements Initializable {
 
+    OrderManagementController orderManagementController = new OrderManagementController();
+
     @FXML
     private JFXButton btnOrderAdd, btnOrderClear, btnOrderDelete, btnOrderUpdate;
 
@@ -62,7 +64,7 @@ public class OrderManagementFormController implements Initializable {
 
         loadOrdersFromDB();
 
-        // Row click → fill fields
+        // fill fields
         tblOrderManagement.setOnMouseClicked(event -> {
             OrderInfo selected = tblOrderManagement.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -79,21 +81,8 @@ public class OrderManagementFormController implements Initializable {
 
     private void loadOrdersFromDB() {
         orderList.clear();
-        try (Connection con = getConnection();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM Orders")) {
-
-            while (rs.next()) {
-                orderList.add(new OrderInfo(
-                        rs.getString("OrderID"),
-                        rs.getDate("OrderDate").toLocalDate().toString(),
-                        rs.getString("CustID")
-                ));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ObservableList<OrderInfo> allOrderDetails = orderManagementController.getAllOrderDetails();
+        tblOrderManagement.setItems(allOrderDetails);
     }
 
     //---------------------ADD------------------
@@ -108,7 +97,6 @@ public class OrderManagementFormController implements Initializable {
             return;
         }
 
-        OrderManagementController orderManagementController = new OrderManagementController();
         orderManagementController.addOrderDetails(orderId,custId,orderDate);
         loadOrdersFromDB();
         clearFields();
@@ -127,7 +115,6 @@ public class OrderManagementFormController implements Initializable {
             return;
         }
 
-        OrderManagementController orderManagementController = new OrderManagementController();
         orderManagementController.updateOrderDetails(id,custId,orderDate);
         loadOrdersFromDB();
         clearFields();
@@ -144,7 +131,6 @@ public class OrderManagementFormController implements Initializable {
             return;
         }
 
-        OrderManagementController orderManagementController = new OrderManagementController();
         orderManagementController.orderDeleteDetails(id);
         loadOrdersFromDB();
         clearFields();
@@ -159,17 +145,6 @@ public class OrderManagementFormController implements Initializable {
         txtOrderId.clear();
         txtCustomerId.clear();
         datePickerOrderDate.setValue(null);
-    }
-
-    // Helper: Validate foreign key existence
-    private boolean existsInTable(Connection con, String table, String column, String value) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM " + table + " WHERE " + column + "=?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, value);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt(1) > 0;
-        }
     }
 
     public void btnOrderManagementExitOnAction(ActionEvent actionEvent) {

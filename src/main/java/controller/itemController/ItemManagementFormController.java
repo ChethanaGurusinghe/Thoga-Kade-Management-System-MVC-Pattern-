@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 
 public class ItemManagementFormController implements Initializable {
 
+    ItemManagementController itemManagementController = new ItemManagementController();
+
     @FXML
     private JFXButton btnItemAdd;
 
@@ -80,8 +82,6 @@ public class ItemManagementFormController implements Initializable {
         Double unitPrice = Double.valueOf(txtUnitPrice.getText());
         Integer qtyOnHand = Integer.valueOf(txtQttyOnHand.getText());
 
-
-        ItemManagementController itemManagementController = new ItemManagementController();
         itemManagementController.addItemDetails(itemCode,description,packSize,unitPrice,qtyOnHand);
         loadItemTable();
         btnItemClearOnAction(null);
@@ -106,7 +106,6 @@ public class ItemManagementFormController implements Initializable {
             return;
         }
 
-        ItemManagementController itemManagementController = new ItemManagementController();
         itemManagementController.deleteItemDetails(code);
         loadItemTable();
         btnItemClearOnAction(null);
@@ -126,7 +125,6 @@ public class ItemManagementFormController implements Initializable {
             return;
         }
 
-        ItemManagementController itemManagementController = new ItemManagementController();
         itemManagementController.updateItemDetails(description,packSize,unitPrice,qtyOnHand,code);
         loadItemTable();
     }
@@ -147,7 +145,6 @@ public class ItemManagementFormController implements Initializable {
     private void loadItemTable() {
         itemInfos.clear();
 
-        ItemManagementController itemManagementController = new ItemManagementController();
         ObservableList<ItemInfo> allitemDetails = itemManagementController.getAllitemDetails();
         tblItemManagement.setItems(allitemDetails);
     }

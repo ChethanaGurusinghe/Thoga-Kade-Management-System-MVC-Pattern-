@@ -7,7 +7,9 @@ import model.CustomerInfo;
 
 import java.sql.*;
 
-public class CustomerManagementController {
+public class CustomerManagementController implements CustomerManagementService {
+
+    @Override
     public void addCustomerDetails(String id,String title,String name,String dob,Double salary,String address,String city,String province,Integer postalCode){
 
         try {
@@ -45,6 +47,7 @@ public class CustomerManagementController {
         }
     }
 
+    @Override
     public void deleteCustomerDetails(String id){
 
         try {
@@ -67,6 +70,7 @@ public class CustomerManagementController {
         }
     }
 
+    @Override
     public void updateCustomerDetails(String title,String name ,String dob,Double salary,String address,String city,String province,Integer postalCode,String id){
 
         try {

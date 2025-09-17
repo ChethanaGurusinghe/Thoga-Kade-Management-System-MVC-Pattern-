@@ -2,6 +2,7 @@ package controller.orderDetailController;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import controller.orderController.OrderManagementController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,8 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 public class OrderDetailManagementFormController implements Initializable {
+
+    OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
 
     @FXML
     private JFXButton btnOrderDetailsAdd;
@@ -90,22 +93,9 @@ public class OrderDetailManagementFormController implements Initializable {
 
     private void loadOrderDetailsFromDB() {
         orderDetailsList.clear();
-        try (Connection con = getConnection();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM OrderDetail")) {
+        ObservableList<OrderDetailsinfo> allOrderDetails = orderDetailManagementController.getAllOrderDetails();
+        tblOrderDetailManagement.setItems(allOrderDetails);
 
-            while (rs.next()) {
-                orderDetailsList.add(new OrderDetailsinfo(
-                        rs.getString("OrderID"),
-                        rs.getString("ItemCode"),
-                        rs.getInt("OrderQTY"),
-                        rs.getInt("Discount")
-                ));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     // --------------------Add ---------------
@@ -121,7 +111,6 @@ public class OrderDetailManagementFormController implements Initializable {
             return;
         }
 
-        OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
         orderDetailManagementController.addOrderDetails(orderId,itemCode,orderQty,discount);
         loadOrderDetailsFromDB();
         clearFields();
@@ -142,7 +131,6 @@ public class OrderDetailManagementFormController implements Initializable {
             return;
         }
 
-        OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
         orderDetailManagementController.updateOrderDetails(orderId,itemCode,orderQty,discount);
         loadOrderDetailsFromDB();
         clearFields();
@@ -159,7 +147,7 @@ public class OrderDetailManagementFormController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Select a row to delete").show();
             return;
         }
-
+        orderDetailManagementController.deleteOrderDetails(orderId,itemCode);
         loadOrderDetailsFromDB();
         clearFields();
     }
