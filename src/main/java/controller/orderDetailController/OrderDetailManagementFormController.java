@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class OrderDetailManagementFormController implements Initializable {
 
-    OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
+    OrderDetailManagementService orderDetailManagementService = new OrderDetailManagementController();
 
     @FXML
     private JFXButton btnOrderDetailsAdd;
@@ -75,7 +75,7 @@ public class OrderDetailManagementFormController implements Initializable {
 
         loadOrderDetailsFromDB();
 
-        // Row click → fill fields
+        // fill fields
         tblOrderDetailManagement.setOnMouseClicked(event -> {
             OrderDetailsinfo selected = tblOrderDetailManagement.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -93,6 +93,7 @@ public class OrderDetailManagementFormController implements Initializable {
 
     private void loadOrderDetailsFromDB() {
         orderDetailsList.clear();
+        OrderDetailManagementController orderDetailManagementController = new OrderDetailManagementController();
         ObservableList<OrderDetailsinfo> allOrderDetails = orderDetailManagementController.getAllOrderDetails();
         tblOrderDetailManagement.setItems(allOrderDetails);
 
@@ -111,7 +112,7 @@ public class OrderDetailManagementFormController implements Initializable {
             return;
         }
 
-        orderDetailManagementController.addOrderDetails(orderId,itemCode,orderQty,discount);
+        orderDetailManagementService.addOrderDetails(orderId,itemCode,orderQty,discount);
         loadOrderDetailsFromDB();
         clearFields();
 
@@ -131,7 +132,7 @@ public class OrderDetailManagementFormController implements Initializable {
             return;
         }
 
-        orderDetailManagementController.updateOrderDetails(orderId,itemCode,orderQty,discount);
+        orderDetailManagementService.updateOrderDetails(orderId,itemCode,orderQty,discount);
         loadOrderDetailsFromDB();
         clearFields();
     }
@@ -147,7 +148,7 @@ public class OrderDetailManagementFormController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Select a row to delete").show();
             return;
         }
-        orderDetailManagementController.deleteOrderDetails(orderId,itemCode);
+        orderDetailManagementService.deleteOrderDetails(orderId,itemCode);
         loadOrderDetailsFromDB();
         clearFields();
     }

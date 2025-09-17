@@ -7,8 +7,9 @@ import model.OrderDetailsinfo;
 
 import java.sql.*;
 
-public class OrderDetailManagementController {
+public class OrderDetailManagementController implements OrderDetailManagementService {
 
+    @Override
     public void addOrderDetails(String orderId,String itemCode,Integer orderQty,Integer discount){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
@@ -42,6 +43,7 @@ public class OrderDetailManagementController {
         }
     }
 
+    @Override
     public void updateOrderDetails(String itemCode,String orderID,Integer orderQty,Integer discount){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
@@ -67,6 +69,7 @@ public class OrderDetailManagementController {
         }
     }
 
+    @Override
     public void deleteOrderDetails(String orderId,String itemCode){
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
