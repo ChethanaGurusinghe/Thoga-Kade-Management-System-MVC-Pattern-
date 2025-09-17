@@ -7,8 +7,9 @@ import model.ItemInfo;
 
 import java.sql.*;
 
-public class ItemManagementController {
+public class ItemManagementController implements ItemManagementService {
 
+    @Override
     public void addItemDetails(String itemCode,String description,String packSize,Double unitPrice,Integer qtyOnHand){
 
         try (Connection connection = DriverManager.getConnection(
@@ -35,6 +36,7 @@ public class ItemManagementController {
         }
     }
 
+    @Override
     public void deleteItemDetails(String code){
 
         try (Connection connection = DriverManager.getConnection(
@@ -111,4 +113,5 @@ public class ItemManagementController {
         }
         return itemInfos;
     }
+
 }
