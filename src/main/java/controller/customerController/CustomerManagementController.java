@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import model.CustomerInfo;
+import db.DBConnection;
 
 import java.sql.*;
 
@@ -13,7 +14,7 @@ public class CustomerManagementController implements CustomerManagementService {
     public void addCustomerDetails(String id,String title,String name,String dob,Double salary,String address,String city,String province,Integer postalCode){
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+            Connection connection = DBConnection.getInstance().getConnection();
 
             // Check if customer already exists
             String checkSQL = "SELECT COUNT(*) FROM Customer WHERE CustID = ?";
@@ -51,7 +52,7 @@ public class CustomerManagementController implements CustomerManagementService {
     public void deleteCustomerDetails(String id){
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+            Connection connection = DBConnection.getInstance().getConnection();
 
             String SQL = "DELETE FROM Customer WHERE CustID = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
@@ -74,9 +75,7 @@ public class CustomerManagementController implements CustomerManagementService {
     public void updateCustomerDetails(String title,String name ,String dob,Double salary,String address,String city,String province,Integer postalCode,String id){
 
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/Thogakade", "root", "1234"
-            );
+            Connection connection = DBConnection.getInstance().getConnection();
 
             String SQL = "UPDATE Customer SET CustTitle= ?, CustName= ?, DOB= ?, salary= ?, CustAddress= ?, City= ?, Province= ?, PostalCode=? WHERE CustID= ?";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
@@ -110,8 +109,8 @@ public class CustomerManagementController implements CustomerManagementService {
         ObservableList<CustomerInfo> customerList = FXCollections.observableArrayList();
 
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
-            Statement stmt = con.createStatement();
+            Connection connection = DBConnection.getInstance().getConnection();
+            Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Customer");
 
             while (rs.next()) {

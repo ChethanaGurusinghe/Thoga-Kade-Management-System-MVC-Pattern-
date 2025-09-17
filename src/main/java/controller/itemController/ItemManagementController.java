@@ -1,5 +1,6 @@
 package controller.itemController;
 
+import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -12,8 +13,8 @@ public class ItemManagementController implements ItemManagementService {
     @Override
     public void addItemDetails(String itemCode,String description,String packSize,Double unitPrice,Integer qtyOnHand){
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
 
             String SQL = "INSERT INTO Item (ItemCode, Description, PackSize, UnitPrice, QtyOnHand) VALUES (?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
@@ -39,8 +40,8 @@ public class ItemManagementController implements ItemManagementService {
     @Override
     public void deleteItemDetails(String code){
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
+        try  {
+            Connection connection = DBConnection.getInstance().getConnection();
 
             String SQL = "DELETE FROM Item WHERE ItemCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
@@ -62,8 +63,8 @@ public class ItemManagementController implements ItemManagementService {
 
     public void updateItemDetails(String description,String packSize,Double unitPrice,Integer qtyOnHand,String code){
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
+        try  {
+            Connection connection = DBConnection.getInstance().getConnection();
 
             String SQL = "UPDATE Item SET Description=?, PackSize=?, UnitPrice=?, QtyOnHand=? WHERE ItemCode=?";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
@@ -93,8 +94,8 @@ public class ItemManagementController implements ItemManagementService {
 
         ObservableList<ItemInfo> itemInfos = FXCollections.observableArrayList();
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
 
             ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM Item");
 

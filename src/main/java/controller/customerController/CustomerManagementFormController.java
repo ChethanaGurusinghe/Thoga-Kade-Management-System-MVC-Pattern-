@@ -95,7 +95,6 @@ public class CustomerManagementFormController implements Initializable {
         int postalCode = Integer.parseInt(txtPostalCode.getText());
 
         customerManagementService.addCustomerDetails(id,title,name,dob,salary,address,city,province,postalCode);
-        //customerManagementController.addCustomerDetails(id,title,name,dob,salary,address,city,province,postalCode);
         loadCustomerTable();
 
     }
@@ -125,7 +124,6 @@ public class CustomerManagementFormController implements Initializable {
         }
 
         customerManagementService.deleteCustomerDetails(id);
-        //customerManagementController.deleteCustomerDetails(id);
         loadCustomerTable();
     }
 
@@ -149,7 +147,6 @@ public class CustomerManagementFormController implements Initializable {
         }
 
         customerManagementService.updateCustomerDetails(title,name,dob,salary,address,city,province,postalCode,id);
-        //customerManagementController.updateCustomerDetails(title,name,dob,salary,address,city,province,postalCode,id);
         loadCustomerTable();
     }
 

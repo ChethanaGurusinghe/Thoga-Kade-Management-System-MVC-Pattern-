@@ -1,5 +1,6 @@
 package controller.orderController;
 
+import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -14,15 +15,16 @@ public class OrderManagementController implements OrderManagementService {
     @Override
     public void addOrderDetails(String id, String custId, LocalDate orderDate){
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234")) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
 
-            if (!existsInTable(con, "Customer", "CustID", custId)) {
+            if (!existsInTable(connection, "Customer", "CustID", custId)) {
                 new Alert(Alert.AlertType.ERROR, "Invalid Customer ID").show();
                 return;
             }
 
             String insertSQL = "INSERT INTO Orders (OrderID, OrderDate, CustID) VALUES (?,?,?)";
-            try (PreparedStatement ps = con.prepareStatement(insertSQL)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSQL)) {
                 ps.setString(1, id);
                 ps.setDate(2, Date.valueOf(orderDate));
                 ps.setString(3, custId);
@@ -40,8 +42,8 @@ public class OrderManagementController implements OrderManagementService {
 
     @Override
     public void deleteOrderDetails(String id) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
-             PreparedStatement ps = con.prepareStatement(
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
+             PreparedStatement ps = connection.prepareStatement(
                      "DELETE FROM Orders WHERE OrderID=?")) {
 
             ps.setString(1,id);
@@ -74,8 +76,8 @@ public class OrderManagementController implements OrderManagementService {
     @Override
     public void updateOrderDetails(String id,String custId,LocalDate orderDate){
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "1234");
-             PreparedStatement ps = con.prepareStatement(
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(
                      "UPDATE Orders SET OrderDate=?, CustID=? WHERE OrderID=?")) {
 
             ps.setDate(1, Date.valueOf(orderDate));
